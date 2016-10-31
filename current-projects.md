@@ -1,13 +1,12 @@
 # Projects
 
 ## WA STEM
-=> (https://github.com/KalAcademyNP/WAStemInsightsApp)
+=> https://github.com/KalAcademyNP/WAStemInsightsApp
 
 ## Lena's website
-=> (https://github.com/emilieg/lena)
+=> https://github.com/emilieg/lena
 
 ## Portfolio 
-=> (https://github.com/emilieg/portofolio)
+=> https://github.com/emilieg/portfolio
 
 
-[GitHub](http://github.com)
