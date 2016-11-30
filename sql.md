@@ -3,7 +3,7 @@
 >If you want to make a change to your data model you have
 >to set up a migration file before you make the change to your model itself.
 >
->Sequelize is an ORM (Object Relational Mapper) - a layer of >software in your application that lets you map objects to 
+>Sequelize is an ORM (Object Relational Mapper) - a layer of software in your application that lets you map objects to 
 >your database. This is the "opposite" of a raw query. 
 >Basically, you write code on your backend to perform CRUD 
 >operations. 
@@ -36,13 +36,12 @@
        
       }
     };
->You need to make sure that you create the up and down 
->function. In my example I am adding column "address" to >a table called "users". Take a look at other examples in 
+>You need to make sure that you create the *up* and *down* 
+>function. In my example I am adding column "address" to a table called "users". Take a look at other examples in 
 >[the sequelize documentation](http://docs.sequelizejs.com/en/latest/docs/migrations/).
 
     module.exports = {
       up: function (queryInterface, Sequelize) {
-
         return queryInterface.addColumn(
                 'users',
                 'address',
@@ -66,7 +65,7 @@
 ###In your app:
 - go to your "models" folder in the application and make the appropriate change on the model. 
 - save 
-- npm start
+- npm start (or whatever command you use to start your ap)
 
 >Connect to your database to make sure the table has 
 >been altered! If you are using PG commander for 
