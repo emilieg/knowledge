@@ -1,4 +1,4 @@
-#How to alter your database schema with Sequelize.
+#How to alter your database schema with Sequelize
 
 >If you want to make a change to your data model you have
 >to set up a migration file before you make the change to your model itself.
@@ -36,7 +36,7 @@
        
       }
     };
->You need to make sure that you create the *up* and *down* 
+>You need to make sure that you create the *UP* and *DOWN* 
 >function. In my example I am adding column "address" to a table called "users". Take a look at other examples in 
 >[the sequelize documentation](http://docs.sequelizejs.com/en/latest/docs/migrations/).
 
@@ -65,7 +65,7 @@
 ###In your app:
 - go to your "models" folder in the application and make the appropriate change on the model. 
 - save 
-- npm start (or whatever command you use to start your ap)
+- npm start (or whatever command you use to start your app)
 
 >Connect to your database to make sure the table has 
 >been altered! If you are using PG commander for 
