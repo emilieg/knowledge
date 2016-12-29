@@ -1,4 +1,4 @@
-#How to use control Angular views with the resolve property and promises.
+#How to control Angular views with the resolve property and promises.
 
 >I needed to set up a 'wild card route' that would be verfified on the back-end.
 >If valid, the view would show a certain templateUrl, if validation failed the view 
@@ -62,7 +62,6 @@
           link: ['$route', 'ApiHttp', '$location', 'httpSrvc', '$q', function($route, ApiHttp, $location, httpSrvc, $q) {
                var d = $q.defer();
                   httpSrvc.getLink($route).then(function(data){
-                      console.log("linkSrvs data", data)
                       if(data !== false){
                           d.resolve()
                           return data;
@@ -77,19 +76,18 @@
       controller: 'formCtrl',
       }) 
 
-> The templateUrl is only shown if the promise was resolved. If the promise was rejected the $routeChangeError function is triggered and changes the view to a specified $location.path(). 
+> The templateUrl is only shown if the promise was resolved. If the promise was rejected the $routeChangeError function is triggered which changes the view to a specified $location.path(). 
 This function is implemented at the top of my scope inside module.run([]) function. 
 
 
     $rootScope.$on('$routeChangeError', function (evt, current, previous, rejection) {
-        // console.log('change error', arguments);
         if (rejection === 'no valid link') {
             $location.path('/')
         }
     }); 
 
 
-Link References
+
 [1]: https://docs.angularjs.org/api/ngRoute/provider/$routeProvider
 [2]: https://docs.angularjs.org/api/ng/service/$q
 [3]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
