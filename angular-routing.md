@@ -12,7 +12,7 @@
               templateUrl: '/form.html',
               controller: 'formCtrl'
               })
->My first instinct was to  inject $http into the config and use it like:
+>My first instinct was to  inject $http into the config and use it like this:
 >
 
       templateUrl: function($route){
@@ -26,14 +26,39 @@
             //set the templateUrl to home.html
             })
       }  
-      
->But this approach will not work because a service such as $http will not have been initialized yet in the "config" phase. If you move the $http request to the controller and change the $location.path from there, the viewer will see a flicker of the template defined in the config function then a jump to the view defined by $location.path. Not a very good user experience.
+
+>But this approach will not work because a service such as $http will not have been initialized yet in the "config" phase. If you move the $http request to the controller and change the $location.path from there, the viewer will see a flicker of the template defined in the config function first, then a jump to the view defined by $location.path. Not a very good user experience.
 
 
->This is where the resolve property becomes useful per [documentation][1]: "An optional map of dependencies which should be injected into the controller. If any of these dependencies are *_promises_*, the router will wait for them all to be *resolved or one to be rejected before the controller is instantiated*. If all the promises are resolved successfully, the values of the resolved promises are injected and $routeChangeSuccess event is fired. If any of the promises are rejected the $routeChangeError event is fired." 
+>This is where the resolve property becomes useful -  per [documentation][1]: "An optional map of dependencies which should be injected into the controller. If any of these dependencies are **promises**, the router will wait for them all to be **resolved or one to be rejected before the controller is instantiated**. If all the promises are resolved successfully, the values of the resolved promises are injected and $routeChangeSuccess event is fired. If any of the promises are rejected the $routeChangeError event is fired." 
+>The cue here is *promises*. I want the router to wait until my $http promise is resolved or rejected before showing a view. This allows me to control which view is served based on the data I receive back from the $http request. Bingo! 
+>
+      myModule.config(['$routeProvider', '$locationProvider', '$httpProvider', 
+          function ($routeProvider, $locationProvider, $httpProvider) {   
+            .when('/:name', {
+              resolve: {
+                    item: ['$route', '$http', '$location','$q', function($route, $http, $location, linkSrvc, $q) {                       
+                      return $http({
+                        method: 'GET',
+                        url: $route.current.params.name
+                      })    
+                    }]
+                    }, 
+              templateUrl: '/form.html',
+              controller: 'formCtrl',
+              })      
 
+>I return the $http call here which is a promise, but I don't have access to the data. My back-end route returns a response with a string in the data field or an empty string in the data field, so I need a way to check for the string and then decide whether that route it's valid or not. 
+
+
+>###Angular $q Service
+>"[A service that helps you run functions asynchronously, and use their return values (or exceptions) when they are done processing.][2]" The Angular native $q object exposes methods that can resolve(), reject() or notify() a promise. This service is similar to the [ES6 implementation][3] but the ES6 version is not as widely supported by browsers.
+
+>###Implementation
 
 
 
 Link References
 [1]: https://docs.angularjs.org/api/ngRoute/provider/$routeProvider
+[2]: https://docs.angularjs.org/api/ng/service/$q
+[3]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
