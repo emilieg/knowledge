@@ -59,14 +59,14 @@
 > I decided to create a service for my $http call, which I set up to return true and false based on the data that was return to me from the database. I found that it made my resolve code cleaner and easier to follow. I'm also wrapping the service (which returns a promise) in the $q promise inside of my resolve property which will allow me to resolve or reject it. 
 
       resolve: {
-          link: ['$route', 'ApiHttp', '$location', 'httpSrvc', '$q', function($route, ApiHttp, $location, httpSrvc, $q) {
+          item: ['$route', 'ApiHttp', '$location', 'httpSrvc', '$q', function($route, ApiHttp, $location, httpSrvc, $q) {
                var d = $q.defer();
-                  httpSrvc.getLink($route).then(function(data){
+                  httpSrvc.getThing($route).then(function(data){
                       if(data !== false){
                           d.resolve()
                           return data;
                       } else {
-                          d.reject('no valid link')
+                          d.reject('no valid data')
                       }
                   })
               return d.promise
@@ -86,6 +86,28 @@ This function is implemented at the top of my scope inside module.run([]) functi
         }
     }); 
 
+> UPDATE: 
+> Since I actully need the data from the $http call in my controller I have to call the the httpSrvc in my controller again, which fetches the data again after the route was resolved...so I decided to refactor my code and actually deleted 10 lines of code to the following:
+
+      resolve: {
+          item: ['$route', '$location', 'httpSrvc,', '$q', function($route,  $location, httpSrvc, $q) {                        
+              return lhttpSrvc.getLink($route)
+              }]
+          },
+
+      templateUrl: '/views/address-collector-form.html',
+      controller: 'formCtrl'
+      }
+
+>Now in my controller I have access to the item property and the data. I am able to change the location path based on this data.
+      app.controller('formCtrl', ['$scope', '$rootScope',
+                            '$location', 'httpSrvc', 'item', '$route', '$location', function($scope, $rootScope, $location, httpSrvc, item, $route, $location){ 
+      this.item = item;
+
+      if(this.item === undefined || this.item === false) {
+        $location.path('/');
+      }
+> I don't see a flicker of the form template if data from item is not verified.    
 
 
 [1]: https://docs.angularjs.org/api/ngRoute/provider/$routeProvider
