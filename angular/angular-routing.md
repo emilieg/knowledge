@@ -1,4 +1,4 @@
-#How to control Angular views with the resolve property and promises.
+# How to control Angular views with the resolve property and promises.
 
 I needed to set up a 'wild card route' that would be verfified on the back-end.
 If valid, the view would show a certain templateUrl, if validation failed the view 
