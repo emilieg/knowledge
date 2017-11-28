@@ -35,7 +35,7 @@ First lets figure out what the last __date__ of that month is.
 We will use the JS [Date Obj](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date). 
 The Date Object creates an instance of a date starting 1 January, 1970 UTC.
 
-To get the last __date__ of the month we need to step in to the next month, and pass 0 as the __day__, which will select the last day of the previous month.
+To get the last __date__ of the month we need to *step in to the next month*  __month + 1__, and pass 0 as the __day__, which will select the last day of the previous month.
 
  ```
   generateCalendarDates(year, month){ 
@@ -49,7 +49,7 @@ To get the last __date__ of the month we need to step in to the next month, and 
     
     let lastDay = new Date(year, month +1, 0).getDate();
     
-    /* add +1 to the month because months are zero based */
+    /* add +1 to the month to step into next month and the 0 for day will bring the month back to current month */
   
   }
   
