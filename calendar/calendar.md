@@ -29,15 +29,16 @@ Next lets create a couple variables:
   }
   
 ```
-Notice the difference between __date__ and __day__. __Day__ is the actual number of the day in the week. For example Sunday is 0, Monday is 1, Tuesday is 2, etc. 
+Notice the difference between __date__ and __day__. __Day__ is the actual number of the day in the week. For example Sunday is 0, Monday is 1, Tuesday is 2, etc. I need the day number later when I am populating the actual calendar and can match the start day with the day of the week. 
 
 First lets figure out what the last __date__ of that month is.
 We will use the JS [Date Obj](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date). 
 The Date Object creates an instance of a date starting 1 January, 1970 UTC.
 
-To get the last __date__ of the month we need to *step in to the next month*  __month + 1__, and pass 0 as the __day__, which will select the last day of the previous month.
+To get the last __date__ of the month we need to __step in to the next month__ ( *month + 1*), and pass 0 as the __day__, which will select the last day of the previous month - bringing us back to the current month. 
 
  ```
+  
   generateCalendarDates(year, month){ 
       
      let calendarDates = [];
@@ -54,21 +55,49 @@ To get the last __date__ of the month we need to *step in to the next month*  __
   }
   
 ```   
+We can get the start day of the month by calling the .getDay() function on a new Date Object.
 
-
+```
+    
     let start = new Date(year, month, 1).getDay();
 
+```
+And now we can run a for loop that generates all of the dates in a month 1 thru lastDay.
+
+```
+  
+  for (let i = 1; i <= lastDay; i++) {
+    calendarDates.push(i);
+    /* push the dates into the array */
+  }
+
+```
+
+The function looks like this right now:
+
+```
+ generateCalendarDates(year, month){ 
+      
+     let calendarDates = [];
+     
+     let start = new Date(year, month, 1).getDay();
+     
+     let lastDay = new Date(year, month +1, 0).getDate();
+     
+     for (let i = 1; i <= lastDay; i++) {
+        calendarDates.push(i);
+     }
+    
+```
+
+```
     for(var i = 1; i <= lastDay; i++){
       let dateObj: CalendarObj = new CalendarObj(undefined, undefined);
       dateObj.day = CALENDAR.WEEKDAYS[new Date(year, month, i).getDay()];
       dateObj.date = i;
       calendarDates.push(dateObj);
     }
-
     return {dates: calendarDates, start: start};
-
-  }
-
 ```
 
 
